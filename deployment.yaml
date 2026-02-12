@@ -13,11 +13,19 @@ spec:
       labels:
         app: nginx-demo
     spec:
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: my-secret
       containers:
       - name: nginx
         image: nginx:1.25
+        volumeMounts:
+          - name: secret-volume
+            mountPath: "/etc/foo"
+            readOnly: true
         envFrom:
           - configMapRef:
-              name: my-configmap
+              name: my-configmap     
         ports:
         - containerPort: 80
